@@ -12,7 +12,7 @@ pre {
 }
 
 pre code {
-    font-family: monospace;
+    font-family: Menlo;
     display: block;
     padding: 0 20px;
     color: #a9bcbc;
@@ -59,3 +59,14 @@ pre code .preprocessing {
     color: #b68a00;
 }
 
+code {
+    font-family: Menlo;
+    font-size: 1.03em;
+    background: #fafafa;
+    padding: 1px 1px;
+    border-radius: 4px;
+}
+
+pre code {
+    background: #1a1a1a;
+}
