@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="og:site_name" content="Rahul Sharma"/><link rel="canonical" href="https://rahulrs0029.github.io/posts/creating-a-progressbar-in-swiftui"/><meta name="twitter:url" content="https://rahulrs0029.github.io/posts/creating-a-progressbar-in-swiftui"/><meta name="og:url" content="https://rahulrs0029.github.io/posts/creating-a-progressbar-in-swiftui"/><title>Creating a ProgressBar in SwiftUI | Rahul Sharma</title><meta name="twitter:title" content="Creating a ProgressBar in SwiftUI | Rahul Sharma"/><meta name="og:title" content="Creating a ProgressBar in SwiftUI | Rahul Sharma"/><meta name="description" content="Creating a ProgressBar in SwiftUI."/><meta name="twitter:description" content="Creating a ProgressBar in SwiftUI."/><meta name="og:description" content="Creating a ProgressBar in SwiftUI."/><meta name="twitter:card" content="summary"/><link rel="stylesheet" href="/styles.css" type="text/css"/><link rel="stylesheet" href="/sundelColors.css" type="text/css"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/images/favicon.png" type="image/png"/><link rel="alternate" href="/feed.rss" type="application/rss+xml" title="Subscribe to Rahul Sharma"/></head><body class="item-page"><header><div class="wrapper"><a class="site-name" href="/">Rahul Sharma</a><nav><ul><li><a class="selected" href="/posts">Blog</a></li><li><a href="/links">Links</a></li><li><a href="/about">About</a></li></ul></nav></div></header><div class="wrapper"><article><div class="content"><h1>Creating a ProgressBar in SwiftUI</h1><p>SwiftUI is Apple’s new powerful framework to build applications across all Apple platforms. It is fast, simple, and easy to learn.</p><p>It has automatic support for Dark Mode, Dynamic Type, localization, and accessibility.</p><h2>What we are going to make</h2><p>We will build this ProgressBar whose progress can be changed by using the Button. It will also have a beautiful animation.</p><img src="https://rscodesios.files.wordpress.com/2019/07/ezgif.com-video-to-gif.gif?w=200&zoom=2"/><h2>Getting Started</h2><blockquote><p>Note: SwiftUI needs Xcode 11 Beta, and for Live Preview to work, you need to be on macOS Catalina.</p></blockquote><blockquote><p>If you have macOS Catalina Beta 5, only Xcode 11 Beta 5 will work. Previous versions of Xcode will crash.</p></blockquote><blockquote><p>If you have macOS Catalina Beta 4, Live Previews will only work if you also have Xcode 11 Beta 4 or later.</p></blockquote><blockquote><p>If you don’t have Xcode 11 Beta, you’ll need to run app on the actual Simulator.</p></blockquote><p>Open up Xcode 11 and create a New Xcode Project.</p><p>Choose Single View Application under iOS.</p><p>Enter whatever you like in the Product Name, and make sure <code>Use SwiftUI</code> is checked.</p><img src="https://rscodesios.files.wordpress.com/2019/07/screen-shot-2019-07-23-at-9.13.00-am.png?w=680&h=444"/><p>Click Next. Save it on Desktop and click Create.</p><h2>Creating a static ProgressBar</h2><p>SwiftUI apps don’t have Main.storyboard file. All UI you will make will be done programmatically.</p><p>Open up <code>ContentView.swift</code> file. This is the initial view of the app. Make sure the Canvas is shown on the right side.</p><p>Now, create a new SwiftUI file and name it <code>ProgressBar</code>. Replace <code>Text()</code> with a <code>ZStack</code>.</p><blockquote><p>SwiftUI has 3 types of stacks. <code>VStack</code> (which stacks the views vertically), <code>HStack</code> (which stacks the views horizontally), and <code>ZStack</code> (which stacks the views on top of each other).</p></blockquote><blockquote><p>If you add 2 circles, one with radius 200, and other with radius 100, in a <code>ZStack</code>, they will look like 2 concentric circles as they’re added on top of each other rather then added next to each other.</p></blockquote><p>Inside this <code>ZStack</code>, add 2 <code>Rectangle()</code>. One for the progress, and one for the track.</p><p>Give the track rectangle the color of gray and opacity of 30%, and the progress rectangle a blue color.</p><p>Also, give both the rectangles a fixed frame for now and a corner radius of 4.0 to the <code>ZStack</code>.</p><pre><code><span class="type">ZStack</span> {
+    <span class="type">Rectangle</span>()
+		.<span class="call">foregroundColor</span>(<span class="type">Color</span>.<span class="property">gray</span>)
+		.<span class="call">opacity</span>(<span class="number">0.3</span>)
+		.<span class="call">frame</span>(width: <span class="number">345.0</span>, height: <span class="number">8.0</span>)
+	<span class="type">Rectangle</span>()
+		.<span class="call">foregroundColor</span>(<span class="type">Color</span>.<span class="property">blue</span>)
+		.<span class="call">frame</span>(width: <span class="number">200.0</span>, height: <span class="number">8.0</span>)
+}
+.<span class="call">cornerRadius</span>(<span class="number">4.0</span>)
+</code></pre><p><code>ProgressBar</code> would look weird right now. This is because the alignment of <code>ZStack</code> is set to center by default.</p><p>Change alignment of <code>ZStack</code> to leading as:</p><pre><code><span class="type">ZStack</span>(alignment: .<span class="dotAccess">leading</span>) {
+</code></pre><p>Now it should look more like a progress bar.</p><h2>Changing progress of ProgressBar</h2><p>Open ProgressBar.swift and add a <code>@Binding</code> property called progress of type <code>CGFloat</code>.</p><blockquote><p>Binding is used to create a two-way connection between a view and its underlying model. Read more on <a href="https://developer.apple.com/documentation/swiftui/binding">Apple Developer Documentation</a></p></blockquote><pre><code><span class="keyword">@Binding var</span> progress: <span class="type">CGFloat</span>
+</code></pre><p>And change the frame of second rectangle according to progress like:</p><pre><code><span class="type">Rectangle</span>()
+	.<span class="call">frame</span>(width: <span class="number">345.0</span> * (progress / <span class="number">100.0</span>), height: <span class="number">8.0</span>)
+</code></pre><p>Try building and compiler will give you an error</p><pre><code><span class="type">Missing</span> arguement <span class="keyword">for</span> parameter 'progress' <span class="keyword">in</span> call.
+<span class="type">Insert</span> 'progress: &lt;#Binding&lt;<span class="type">CGFLoat</span>&gt;#&gt;'
+</code></pre><p>This is because we haven’t provided progress value for the Live Preview.</p><p>Change it to:</p><pre><code><span class="type">ProgressBar</span>(progress: .<span class="call">constant</span>(<span class="number">25.0</span>))
+</code></pre><blockquote><p>You can create a constant Binding values using .constant(value) Try changing the value of progress to something else. ProgressBar will fill accordingly.</p></blockquote><p>Now go back to <code>ContentView.swift</code>. Create a <code>@State</code> variable called <code>progress</code> of type <code>CGFloat</code>.</p><blockquote><p>When the value of State variable changes, the view invalidates its appearance and recomputes the body. Read more on <a href="https://developer.apple.com/documentation/swiftui/state">Apple Developer Documentation</a></p></blockquote><pre><code><span class="keyword">@State var</span> progress: <span class="type">CGFloat</span> = <span class="number">0.0</span>
+</code></pre><p>Next, add a <code>VStack</code> in the body of <code>ContentView</code>. This <code>VStack</code> will contain the <code>ProgressBar</code> we just created, and a button which will randomly set the progress when tapped.</p><pre><code><span class="type">VStack</span> {
+	<span class="type">ProgressBar</span>(progress: $progress)
+	<span class="type">Button</span>(
+		action: {
+			<span class="keyword">self</span>.<span class="property">progress</span> = <span class="type">CGFloat</span>.<span class="call">random</span>(in: <span class="number">0</span>...<span class="number">100</span>)
+		}
+	) {
+		<span class="type">Text</span>(<span class="string">"Random Progress"</span>)
+	}
+}
+</code></pre><p>Now run the app and it should give you a random progress when button is tapped.</p><h2>Adding animation when progress is changed</h2><p>In <code>ProgressBar.swift</code> file, add a <code>@State</code> variable called <code>isShown</code> of type <code>Bool</code>, and set to <code>false</code> initially.</p><p>Add <code></code>.onAppear { }<code></code> at the end of <code>ZStack</code>. This will be called as soon as the <code>ZStack</code> is appeared. In <code></code>.onAppear { }<code></code> set the value of <code>isShown</code> to <code>true</code>.</p><pre><code><span class="keyword">struct</span> ProgressBar: <span class="type">View</span> {
+    <span class="keyword">@Binding var</span> progress: <span class="type">CGFloat</span>
+    <span class="keyword">@State var</span> isShowing = <span class="keyword">false
+    var</span> body: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="type">ZStack</span>(alignment: .<span class="dotAccess">leading</span>) {
+            <span class="type">Rectangle</span>()
+                .<span class="call">foregroundColor</span>(<span class="type">Color</span>.<span class="property">gray</span>)
+                .<span class="call">opacity</span>(<span class="number">0.3</span>)
+                .<span class="call">frame</span>(width: <span class="number">345.0</span>, height: <span class="number">8.0</span>)
+            <span class="type">Rectangle</span>()
+                .<span class="call">foregroundColor</span>(<span class="type">Color</span>.<span class="property">blue</span>)
+                .<span class="call">frame</span>(width: <span class="number">345.0</span> * (<span class="keyword">self</span>.<span class="property">progress</span> / <span class="number">100.0</span>), height: <span class="number">8.0</span>)
+        }
+        .<span class="call">onAppear</span> {
+            <span class="keyword">self</span>.<span class="property">isShowing</span> = <span class="keyword">true</span>
+        }
+        .<span class="call">cornerRadius</span>(<span class="number">4.0</span>)
+    }
+}
+</code></pre><p>Next, change the <code>frame</code> of progress bar to be like:</p><pre><code>.<span class="call">frame</span>(width: <span class="keyword">self</span>.<span class="property">isShown</span> ? <span class="number">345.0</span> * (progress / <span class="number">100.0</span>) : <span class="number">0</span>, height: <span class="number">8.0</span>)
+</code></pre><p>It will give the blue progress bar rectangle a <code>width</code> of 0 initially, but as soon as the <code>ZStack</code> appears, it will change its width to the progress provided.</p><p>Now adding animation is super easy.</p><p>Add this code below the frame line of blue rectangle.</p><pre><code>.<span class="call">animation</span>(.<span class="call">linear</span>(duration: <span class="number">0.6</span>))
+</code></pre><p>This adds a linear animation of duration 0.6 seconds to the rectangle. You can also choose ease-in or ease-out instead of linear.</p><blockquote><p>Try playing with the animation duration and animation type.</p></blockquote><p>Your code should now look like this:</p><pre><code><span class="keyword">import</span> SwiftUI
+
+<span class="keyword">struct</span> ProgressBar: <span class="type">View</span> {
+
+    <span class="keyword">@State var</span> isShowing = <span class="keyword">false
+    @Binding var</span> progress: <span class="type">CGFloat</span>
+
+    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="type">ZStack</span>(alignment: .<span class="dotAccess">leading</span>) {
+            <span class="type">Rectangle</span>()
+                .<span class="call">foregroundColor</span>(<span class="type">Color</span>.<span class="property">gray</span>)
+                .<span class="call">opacity</span>(<span class="number">0.3</span>)
+                .<span class="call">frame</span>(width: <span class="number">345.0</span>, height: <span class="number">8.0</span>)
+            <span class="type">Rectangle</span>()
+                .<span class="call">foregroundColor</span>(<span class="type">Color</span>.<span class="property">blue</span>)
+                .<span class="call">frame</span>(width: <span class="keyword">self</span>.<span class="property">isShowing</span> ? <span class="number">345.0</span> * (<span class="keyword">self</span>.<span class="property">progress</span> / <span class="number">100.0</span>) : <span class="number">0.0</span>, height: <span class="number">8.0</span>)
+                .<span class="call">animation</span>(.<span class="call">linear</span>(duration: <span class="number">0.6</span>))
+        }
+        .<span class="call">onAppear</span> {
+            <span class="keyword">self</span>.<span class="property">isShowing</span> = <span class="keyword">true</span>
+        }
+        .<span class="call">cornerRadius</span>(<span class="number">4.0</span>)
+    }
+}
+
+<span class="preprocessing">#if DEBUG</span>
+<span class="keyword">struct</span> ProgressBar_Previews: <span class="type">PreviewProvider</span> {
+    <span class="keyword">static var</span> previews: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="type">ProgressBar</span>(progress: .<span class="call">constant</span>(<span class="number">25.0</span>))
+    }
+}
+<span class="preprocessing">#endif</span>
+</code></pre><p>Finally, run the app in Live Preview of <code>ContentView.swift</code>, and press the button. Now the progress should animate beautifully to random value when the button is tapped.</p><h2>Adding GeometryReader</h2><p>Here’s a little challenge for you 😉</p><p>Try changing the progress bar frame to be dynamic rather than fixed. So that when you use change the frame of <code>ProgressView()</code> in <code>ContentView.swift</code>, its size should change according to set value rather than always being of size 345 (width) by 8 (height).</p><blockquote><p>Hints: 1. You’ll need to use GeometryReader. 2. You can get width using geometry.size.width</p></blockquote><p>Finished source is available on my GitHub <a href="https://github.com/rahulrs0029/ProgressBar">repository</a>.</p></div><span>Tagged with: </span><ul class="tag-list"><li><a href="/tags/swiftui">swiftui</a></li><li><a href="/tags/article">article</a></li></ul></article></div><footer><p>Generated using <a href="https://github.com/johnsundell/publish">Publish</a></p><p><a href="/feed.rss">RSS feed</a></p></footer></body></html>
