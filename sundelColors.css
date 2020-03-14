@@ -67,6 +67,12 @@ code {
     border-radius: 4px;
 }
 
+@media (prefers-color-scheme: dark) {
+    code {
+        background: #afafaf;
+    }
+}
+
 pre code {
     background: #1a1a1a;
 }
