@@ -143,20 +143,20 @@ footer {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #222;
+        background-color: #000;
     }
 
     body,
     header .site-name {
-        color: #ddd;
+        color: #fff;
     }
 
     .item-list > li {
-        background-color: #333;
+        background-color: #0f0f0f;
     }
 
     header {
-        background-color: #000;
+        background-color: #0f0f0f;
     }
 }
 
